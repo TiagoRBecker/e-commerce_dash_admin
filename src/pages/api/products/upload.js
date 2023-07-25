@@ -1,12 +1,16 @@
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
-import { unlink } from "fs/promises";
+import { unlink } from "fs";
 
 import nc from "next-connect";
 const upload = multer({
-  dest: "/tmp",
+  dest: "uploads/",
 });
-
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUD_KEY, 
+  api_secret: process.env.CLOUD_API 
+});
 const handler = nc()
   .use(upload.array("file"))
 
