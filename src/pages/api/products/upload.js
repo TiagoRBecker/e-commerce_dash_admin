@@ -6,11 +6,7 @@ import nc from "next-connect";
 const upload = multer({
   dest: "uploads/",
 });
-cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME, 
-  api_key: process.env.CLOUD_KEY, 
-  api_secret: process.env.CLOUD_API 
-});
+
 const handler = nc()
   .use(upload.array("file"))
 
