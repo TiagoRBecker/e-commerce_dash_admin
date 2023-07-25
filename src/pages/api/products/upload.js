@@ -4,7 +4,7 @@ import { unlink } from "fs/promises";
 
 import nc from "next-connect";
 const upload = multer({
-  dest: "uploads/",
+  dest: "/tmp",
 });
 
 const handler = nc()
