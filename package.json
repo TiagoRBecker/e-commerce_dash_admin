@@ -36,6 +36,7 @@
     "stripe": "^12.4.0",
     "styled-components": "^5.3.9",
     "sweetalert2": "^11.7.3",
+    "vercel": "^31.1.0",
     "zod": "^3.21.4"
   }
 }
