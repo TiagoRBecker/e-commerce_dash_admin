@@ -82,7 +82,7 @@ const router = useRouter();
     try {
       const validateSchema = await schema.parse(values);
       const login = await signIn("credentials", { redirect: false, email:values.email ,password:values.password });
-      console.log(login)
+  
      if (login && login.ok) {
        router.push('/')
       } else {
