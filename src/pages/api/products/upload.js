@@ -1,47 +1,48 @@
-import {
-  v2 as cloudinary
-} from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
+import multiparty from "multiparty";
 
-import multiparty from 'multiparty';
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_API,
+});
 
-
-
-export default async function handler(req,res) {
- 
-
-
+export default async function handler(req, res) {
   const form = new multiparty.Form();
-  const {fields,files} = await new Promise((resolve,reject) => {
+  const { fields, files } = await new Promise((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
       if (err) reject(err);
-      resolve({fields,files});
+      resolve({
+        fields,
+        files,
+      });
     });
   });
 
- 
   const link = [];
   for (const file of files.file) {
- 
-    const result = await cloudinary.uploader
-          .upload(file.path, {
-            public_id: `${Math.floor(Math.random() * 99999)}_e-comerce`,
-            crop: "fill",
-          })
-  
-    
+    const result = await cloudinary.uploader.upload(file.path, {
+      public_id: `${Math.floor(Math.random() * 99999)}_e-comerce`,
+      crop: "fill",
+    });
+
     link.push(result.url);
   }
-  return res.json({link});
+  return res.json({
+    link,
+  });
 }
 
 export const config = {
   api: {
-    bodyParser: false
+    bodyParser: false,
   },
 };
 
 /*
+
+funçao upload em multer caso   não queria usar o multiparty
 import multer from 'multer';
 import path from 'path';
 import {

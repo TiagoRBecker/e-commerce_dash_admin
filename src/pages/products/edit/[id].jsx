@@ -45,7 +45,7 @@ export default Edit;
 export const getServerSideProps  = async (context)=>{
   await mongooseConnect();
   const id = context.query.id
-  console.log(id)
+
   const session = await getServerSession(context.req,context.res, authOptions)
   if (!session) {
     return {
