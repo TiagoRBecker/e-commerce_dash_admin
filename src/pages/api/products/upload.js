@@ -9,30 +9,36 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  const form = new multiparty.Form();
-  const { fields, files } = await new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      resolve({
-        fields,
-        files,
+  try {
+    const form = new multiparty.Form();
+    const { fields, files } = await new Promise((resolve, reject) => {
+      form.parse(req, (err, fields, files) => {
+        if (err) reject(err);
+        resolve({
+          fields,
+          files,
+        });
       });
     });
-  });
-
-  const link = [];
-  for (const file of files.file) {
-    const result = await cloudinary.uploader.upload(file.path, {
-      public_id: `${Math.floor(Math.random() * 99999)}_e-comerce`,
-      crop: "fill",
+  
+    const link = [];
+    for (const file of files.file) {
+      const result = await cloudinary.uploader.upload(file.path, {
+        public_id: `${Math.floor(Math.random() * 99999)}_e-comerce`,
+        crop: "fill",
+      });
+      
+      link.push(result.url);
+    }
+     
+    return res.json({
+      link,
     });
-    
-    link.push(result.url);
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message:"Error tente novamente mais tarde!"})
   }
-   console.log(link)
-  return res.json({
-    link,
-  });
+
 }
 
 export const config = {

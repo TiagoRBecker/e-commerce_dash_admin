@@ -7,7 +7,11 @@ export default async function products(req, res) {
   const { method } = req;
   const { id } = req.query;
   const { name, price, brand, descript, img, category, properties } = req.body;
-  let replacePrice = parseInt(price?.replace(/\D/g, ""))
+  let priceReplace;
+  if(price === "string"){
+     priceReplace = price?.replace(/\D/g, "")
+  }
+  
  
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
@@ -28,7 +32,7 @@ export default async function products(req, res) {
           },
           {
             name,
-            price:replacePrice,
+            price: priceReplace,
             brand,
             descript,
             img,

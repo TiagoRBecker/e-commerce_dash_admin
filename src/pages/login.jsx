@@ -69,7 +69,7 @@ const router = useRouter();
     password: "",
   });
   const schema = z.object({
-    email: z.string().min(1, { message: "Necessário preencher campo e-mail" }),
+    email: z.string().email({message:"Insira um e-mail válido"}).min(1, { message: "Necessário preencher campo e-mail" }),
     password: z
       .string()
       .min(1, { message: "Necessário preencher campo password" }),

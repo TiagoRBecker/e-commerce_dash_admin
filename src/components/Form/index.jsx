@@ -59,7 +59,7 @@ const FormComponent = ({
     setCategories(get.getCategory);
     return;
   };
- console.log(images)
+ 
   class HandlerUpload {
     //Função para upload de imagems
     static upload = async (e) => {

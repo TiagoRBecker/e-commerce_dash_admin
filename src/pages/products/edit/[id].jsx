@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Form from "@/components/Form/index";
 import Layout from "@/components/Layout";
 import Center from "@/components/Center";
-import Api from "../../../../utils/api";
 import styled from "styled-components";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
