@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Layout from "@/components/Layout";
 import Swal from "sweetalert2";
-import Spinner from "@/components/Spinner";
 import Center from "@/components/Center";
 import Api from "../../../utils/api";
 import styled from "styled-components";
@@ -11,17 +10,21 @@ import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { mongooseConnect } from "../../../server/mongose";
 import { Category } from "../../../models/Category";
+import Link from "next/link";
 
 export const Title = styled.h1`
   width: 100%;
 `;
 export const BoxCategories = styled.section`
   display: flex;
-
+   width: 100%;
   min-height: 100vh;
 
   flex-direction: column;
   gap: 3rem;
+  .mobile{
+    display: none;
+  }
   form {
     width: 50vw;
     height: 100%;
@@ -29,6 +32,7 @@ export const BoxCategories = styled.section`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+   
   }
   label {
     text-align: left;
@@ -57,7 +61,7 @@ export const BoxCategories = styled.section`
 
     outline: none;
     padding: 0%.5rem;
-    border: solid 1px #d8d5db;
+    border: solid 1px #333;
     transition: all ease-in-out 0.3s;
     font-size: 0.9rem;
     border-radius: 0.3rem;
@@ -195,9 +199,7 @@ export const BoxCategories = styled.section`
     .delet:hover {
       background-color: #a30000;
     }
-    @media screen and (max-width: 470px) {
-      flex-direction: column;
-    }
+    
   }
   .box-input-propy input {
     border: solid 1px #ccc;
@@ -221,11 +223,42 @@ export const BoxCategories = styled.section`
   }
   .box-select {
     width: 100%;
-
     display: flex;
     gap: 1rem;
     align-items: center;
   }
+  @media screen and (max-width:520px) {
+      form{
+        width: 100%;
+      }
+      .box-select{
+        justify-content: center;
+      }
+      .submit{
+        width: 100%;
+      }
+      .box-input-propy{
+        flex-direction: column;
+      }
+      .desktop{
+        display: none;
+      }
+      table .categories-property{
+        display: none;
+      }
+      
+      .mobile{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+      }
+      .mobile svg{
+        width: 2rem;
+        color: #333;
+        
+      }
+    }
 `;
 export const BoxSpinner = styled.div`
   width: 100%;
@@ -500,8 +533,9 @@ const Categoires = ({ categories }) => {
                   <thead>
                     <tr>
                       <th>Categoria</th>
-                      <th>Propriedades</th>
-                      <th>Ações</th>
+                      <th className="desktop">Propriedades</th>
+                      <th >Ações</th>
+                      <th className="mobile">Visualizar</th>
                     </tr>
                   </thead>
                   {listCategories.map((category, index) => (
@@ -510,16 +544,18 @@ const Categoires = ({ categories }) => {
                         <td className="category-name">
                           <p>{category?.name}</p>
                         </td>
+
                         <td className="categories-property">
                           {category?.properties.map((property, index) => (
                             <div key={index}>
+                            
                               <p>{property.name.toUpperCase()}</p>
                               <p>{property.values?.join(", ").toUpperCase()}</p>
                             </div>
                           ))}
                         </td>
 
-                        <td>
+                        <td >
                           <div className="actions">
                             <button
                               className="edit"
@@ -543,7 +579,7 @@ const Categoires = ({ categories }) => {
                             </button>
 
                             <button
-                              className="delet"
+                              className="delet desktop"
                               onClick={() =>
                                 HandlerCategory.handleDelete(category)
                               }
@@ -563,6 +599,32 @@ const Categoires = ({ categories }) => {
                               </svg>
                             </button>
                           </div>
+                        </td>
+
+                        <td className="mobile">
+                      <Link href={`categories/${category._id}`}>
+                        <button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                        </button>
+                      </Link>
                         </td>
                       </tr>
                     </tbody>
