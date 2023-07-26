@@ -19,7 +19,8 @@ export const Title = styled.div`
 export const Form = styled.form`
   border-radius: 5px;
   background-color: #adacb5;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   height: 300px;
   display: flex;
   align-items: center;
