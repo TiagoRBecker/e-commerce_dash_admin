@@ -26,9 +26,10 @@ export default async function handler(req, res) {
       public_id: `${Math.floor(Math.random() * 99999)}_e-comerce`,
       crop: "fill",
     });
-
+    
     link.push(result.url);
   }
+   console.log(link)
   return res.json({
     link,
   });

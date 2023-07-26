@@ -7,7 +7,7 @@ export default async function products(req, res) {
   const { method } = req;
   const { id } = req.query;
   const { name, price, brand, descript, img, category, properties } = req.body;
-  
+  let replacePrice = parseInt(price?.replace(/\D/g, ""))
  
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
@@ -21,34 +21,44 @@ export default async function products(req, res) {
   if (method === "POST") {
    
     if (id) {
-      const editProduct = await Product.updateOne(
-        {
-          _id: id,
-        },
-        {
-          name,
-          price,
-          brand,
-          descript,
-          img,
-          category,
-          properties,
-        }
-      );
-      return res.json({
-        editProduct,
-      });
+      try {
+        const editProduct = await Product.updateOne(
+          {
+            _id: id,
+          },
+          {
+            name,
+            price:replacePrice,
+            brand,
+            descript,
+            img,
+            category,
+            properties,
+          }
+        );
+        return res.json({
+          editProduct,
+        });
+      } catch (error) {
+          console.log(error)
+      }
+    
     }
   }
   if (method === "DELETE") {
     
     if (id) {
-      const deleteProduct = await Product.deleteOne({
-        _id: id,
-      });
-      return res.json({
-        deleteProduct,
-      });
+      try {
+        const deleteProduct = await Product.deleteOne({
+          _id: id,
+        });
+        return res.json({
+          deleteProduct,
+        });
+      } catch (error) {
+         console.log(error)
+      }
+     
     }
   }
  } catch (error) {
