@@ -22,7 +22,7 @@ const FormComponent = ({
     name: z.string().min(1, { message: "Necessário preencher o  nome" }),
     brand: z.string().min(1, { message: "Necessário preencher a marca" }),
     price: z.string().nonempty("Necessário preencher o preço"),
-    img: z.array(z.string()).min(1, "Necessário selecionar uma imagem"),
+
     descript: z
       .string()
       .min(1, { message: "Necessário preencher a descrição" }),
@@ -43,11 +43,8 @@ const FormComponent = ({
     price: editPrice || "",
     descript: editDescript || "",
     category: editCategory || "",
-    img: [],
     properties: editProperties || {},
   });
-
-
 
   useEffect(() => {
     // rota para pegar os dados da categoria
@@ -59,7 +56,7 @@ const FormComponent = ({
     setCategories(get.getCategory);
     return;
   };
- 
+
   class HandlerUpload {
     //Função para upload de imagems
     static upload = async (e) => {
@@ -88,16 +85,16 @@ const FormComponent = ({
   //Função para enviar os dados para db
   const handleSubmit = async (e) => {
     e.preventDefault();
-    values.properties = properties;
-    values.img = images;
-    const data = { ...values };
-    
 
-   if (_id) {
+    values.properties = properties;
+
+    const data = { ...values };
+
+    if (_id) {
       //Rota para alterar "caso tenha id aterar o produto e envia a mensagem atraves do Swal"
 
       try {
-        const edit = await Api.updateProduct(_id, data, _id);
+        const edit = await Api.updateProduct(_id, data, images);
 
         Swal.fire(
           "Produto alterado com sucesso!",
@@ -122,7 +119,7 @@ const FormComponent = ({
       try {
         const validatedData = await schema.parse(values);
 
-        const create = await Api.createProduct(values);
+        const create = await Api.createProduct(data, images);
 
         Swal.fire(
           "Produto cadastrado com sucesso!",
@@ -143,7 +140,6 @@ const FormComponent = ({
         );
       }
     }
-    
   };
 
   //Adiciona as propriedadess no array
@@ -155,7 +151,7 @@ const FormComponent = ({
       propertiesToFill.push(...catInfo.properties);
     }
   }
-  
+
   //Funçao para exibir propriedades do produtos exemplo  cores, tamanho ..
   const setProductProp = (propName, value) => {
     setProperties((prev) => {

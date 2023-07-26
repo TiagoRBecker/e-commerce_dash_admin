@@ -44,10 +44,10 @@ class Api {
     const get = await axios.get("/api/stripe/year/yearSales");
     return get.data;
   }
-
-  static async createProduct(data) {
-    const { name, price, brand, descript, images, category, properties } = data;
-    const product = await axios.post("/api/products/products", { ...data });
+ // Images podem ser passadas junto  com o data optei por separar devido ao tratamento 
+  static async createProduct(data,images) {
+    const { name, price, brand, descript, category, properties } = data;
+    const product = await axios.post("/api/products/products", { ...data ,images});
     return product.data;
   }
 
@@ -72,9 +72,9 @@ class Api {
     return category.data;
   }
 
-  static async updateProduct(id, data,img) {
-    const { name, price, brand, descript, category, properties } = data;
-    const product = await axios.post(`/api/products/${id}`, { ...data, id, img});
+  static async updateProduct(id, data,images) {
+    const { name, price, brand, descript, category, properties  } = data;
+    const product = await axios.post(`/api/products/${id}`, { ...data,images });
     return product.data;
   }
 

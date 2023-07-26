@@ -6,12 +6,16 @@ import  { authOptions } from "../auth/[...nextauth]";
 export default async function products(req, res) {
   const { method } = req;
   const { id } = req.query;
-  const { name, price, brand, descript, img, category, properties } = req.body;
+  const { name, price, brand, descript, images, category, properties } = req.body;
+
   let priceReplace;
-  if(price === "string"){
-     priceReplace = price?.replace(/\D/g, "")
-  }
-  
+
+if (typeof price === "string") {
+  priceReplace = price.replace(/\D/g, "");
+} else {
+  priceReplace = price;
+}
+
  
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
@@ -35,7 +39,7 @@ export default async function products(req, res) {
             price: priceReplace,
             brand,
             descript,
-            img,
+            img:images,
             category,
             properties,
           }
@@ -69,7 +73,10 @@ export default async function products(req, res) {
   return res.status(500).json({
     error: "Erro no servidor tente novamente mais tarde",
   });
+  
  }
+ 
+ 
   
  
 

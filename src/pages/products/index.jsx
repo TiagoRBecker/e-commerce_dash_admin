@@ -108,6 +108,7 @@ export default function products({ products }) {
   class HandlerProProducts {
     //exibe os produtos via paginaçao
     static handleProducts = async (active) => {
+      setActive(active)
       setLoading(true)
       await router.push({
         pathname: "/products",
@@ -227,17 +228,18 @@ export const getServerSideProps = async (context) => {
   }
 
   let getProdutcs;
-  if (pg) {
-    getProdutcs = await Product.find()
-      .skip(pg * limit)
-      .limit(limit);
-  } else {
+  if (search) {
     getProdutcs = await Product.find({
       $or: [
         { name: { $regex: search || "", $options: "i" } },
         { brand: { $regex: search || "", $options: "i" } },
       ],
     });
+    
+  } else {
+    getProdutcs = await Product.find()
+    .skip(pg * limit)
+    .limit(limit);
   }
   const products = await JSON.parse(JSON.stringify(getProdutcs));
 
