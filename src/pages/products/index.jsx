@@ -201,7 +201,7 @@ export default function products({ products }) {
                         onClick={() => HandlerProProducts.handleProducts(index)}
                         className={index === active ? "active" : ""}
                       >
-                        {index + 1}
+                        {index +1}
                       </button>
                     ))}
                 </BoxPagination>
@@ -216,8 +216,9 @@ export default function products({ products }) {
 export const getServerSideProps = async (context) => {
   await mongooseConnect();
   const session = await getServerSession(context.req, context.res, authOptions);
-  const pg = context.query.pg || 1;
-  const search = context.query.search;
+  const pg = context.query.pg || 0;
+  const search = context.query.search || "";
+
   const limit = 7;
   if (!session) {
     return {
@@ -229,18 +230,19 @@ export const getServerSideProps = async (context) => {
   }
 
   let getProdutcs;
-  if (search) {
-    getProdutcs = await Product.find({
-      $or: [
-        { name: { $regex: search || "", $options: "i" } },
-        { brand: { $regex: search || "", $options: "i" } },
-      ],
-    });
-    
-  } else {
+  if (search === "") {
     getProdutcs = await Product.find()
     .skip(pg * limit)
     .limit(limit);
+    
+  } else {
+   
+    getProdutcs = await Product.find({
+      $or: [
+        { name: { $regex: search , $options: "i" } },
+        { brand: { $regex: search , $options: "i" } },
+      ],
+    });
   }
   const products = await JSON.parse(JSON.stringify(getProdutcs));
 

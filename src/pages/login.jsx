@@ -20,7 +20,7 @@ export const Form = styled.form`
   border-radius: 5px;
   background-color: #adacb5;
   width: 100%;
-  max-width: 400px;
+  max-width: 340px;
   height: 300px;
   display: flex;
   align-items: center;
@@ -49,6 +49,8 @@ export const Form = styled.form`
   .error {
     color: red;
     font-size: 1rem;
+    display: flex;
+    flex-direction: column;
   }
   .submit {
     width: 200px;
@@ -70,7 +72,7 @@ const router = useRouter();
     password: "",
   });
   const schema = z.object({
-    email: z.string().email({message:"Insira um e-mail válido"}).min(1, { message: "Necessário preencher campo e-mail" }),
+    email: z.string().min(1, { message: "Necessário preencher campo e-mail." }).email({message:"Insira um e-mail válido."}),
     password: z
       .string()
       .min(1, { message: "Necessário preencher campo password" }),
@@ -110,7 +112,13 @@ const router = useRouter();
             value={values.email}
             onChange={(e) => setValues({ ...values, email: e.target.value })}
           />
-          {showError?.email && <p className="error">{showError.email}</p>}
+          {showError?.email && 
+          showError.email.map((error,index)=>(
+            <p className="error" key={index}>
+                 {error}
+            </p>
+          ))}
+         
         </div>
         <div className="input-box">
           <label htmlFor="">Senha</label>
@@ -120,7 +128,10 @@ const router = useRouter();
             value={values.password}
             onChange={(e) => setValues({ ...values, password: e.target.value })}
           />
-          {showError?.password && <p className="error">{showError.password}</p>}
+          {showError?.password && 
+
+          <p className="error">{showError.password}</p>
+          }
         </div>
         {errorCredential && <p className="error">E-mail ou senha inválidos!</p>}
         <input type="submit" className="submit" value={"ENTRAR"} />

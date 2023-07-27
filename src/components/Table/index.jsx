@@ -8,7 +8,7 @@ const Table = ({ products, handleDelete }) => {
           <tr>
             <th>Produtos</th>
             <th className="mobile">Descrição</th>
-            <th>Preço</th>
+            <th className="mobile">Preço</th>
             <th>Ações</th>
           </tr>
         </T.Thead>
@@ -21,7 +21,7 @@ const Table = ({ products, handleDelete }) => {
               <td className="mobile">
                 <p >{product?.descript}</p>
               </td>
-              <td>
+              <td className="mobile">
                 <p>
                   {product?.price?.toLocaleString("pt-br", {
                     style: "currency",
