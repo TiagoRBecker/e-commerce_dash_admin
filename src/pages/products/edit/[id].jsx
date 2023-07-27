@@ -17,7 +17,7 @@ color: #333;
 
 const Edit = ({product}) => {
   
-console.log(product)
+
 
 
   return (

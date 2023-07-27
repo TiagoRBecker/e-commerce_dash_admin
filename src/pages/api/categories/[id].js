@@ -16,6 +16,7 @@ export default async function categories(req, res) {
   }
   try {
     await mongooseConnect();
+    // deleta a categoria pelo id 
     if (method === "DELETE") {
       if (id) {
         const deleteProduct = await Category.deleteOne({
@@ -26,6 +27,7 @@ export default async function categories(req, res) {
         });
       }
     }
+    //aletra a categoria pelo id
     if (method === "PUT") {
       const { name, properties, _id } = req.body;
 

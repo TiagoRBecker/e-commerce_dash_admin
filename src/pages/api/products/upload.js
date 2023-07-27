@@ -7,7 +7,7 @@ cloudinary.config({
   api_key: process.env.CLOUD_KEY,
   api_secret: process.env.CLOUD_API,
 });
-
+// rota de upload trata  os dados das imagem envia para cloudnary e me retorna apenas a url
 export default async function handler(req, res) {
   try {
     const form = new multiparty.Form();

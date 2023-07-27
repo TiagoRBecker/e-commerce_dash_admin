@@ -5,13 +5,14 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "../auth/[...nextauth]";
 export default async function products(req, res) {
   const { method } = req;
-  const { name, price, brand, descript, img, category, properties } = req.body;
+  const { name, price, brand, descript, images, category, properties } = req.body;
   const { search } = req.query;
+  // caso o priço venha como string transforma em number devido ao uso do fw numberformat
   let replacePrice = parseInt(price?.replace(/\D/g, ""))
   const page = req.query.pg || 0;
   const limit = 7;
 
-
+ //  pega asessao via next auth caso nao tenha sessao manda para rota login
   const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
@@ -46,7 +47,7 @@ export default async function products(req, res) {
       price: replacePrice,
       brand,
       descript,
-      img,
+      img:images,
       category,
       properties,
     });
